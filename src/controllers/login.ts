@@ -27,11 +27,11 @@ export default async (fastify: FastifyInstance) => {
         const token = fastify.jwt.sign(payload)
         reply.send({ token })
       } else {
-        reply.status(401).send({ ok: false, message: 'Login failed' })
+        reply.status(401).send({ ok: false, code: 401, error: 'ชื่อผู้ใช้งานหรือรหัสผ่าน ไม่ถูกต้อง' })
       }
 
     } catch (error: any) {
-      reply.status(500).send({ message: error.message })
+      reply.status(500).send({ ok: false, code: 500, error: error.message })
     }
   })
 
