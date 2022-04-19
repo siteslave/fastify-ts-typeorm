@@ -1,0 +1,15 @@
+{
+  "verbose": true,
+  "ignore": [
+    "*.test.js",
+    "fixtures/*",
+    "views/*",
+    "public/*",
+    "dist/*"
+  ],
+  "watch": [
+    "src"
+  ],
+  "ext": "ts",
+  "exec": "ts-node -P ./tsconfig.json -r ./src/server.ts"
+}

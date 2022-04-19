@@ -1,0 +1,7 @@
+node_modules/*
+dist/*
+package-lock.json
+
+uploads/*
+.DS_Store
+config.conf

@@ -1,0 +1,12 @@
+version: "3"
+services:
+  fastify-rest:
+    image: "registry.gitlab.com/siteslave/fastify-restful"
+    container_name: "fastify-rest"
+    ports:
+      - 8080:8080
+
+    volumes:
+      - ./config.conf:/home/api/config.conf
+      
+    restart: always

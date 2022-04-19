@@ -1,0 +1,39 @@
+stages: [build, deploy]
+
+build:
+  image: node:14-alpine3.12
+  stage: build
+  script:
+    - apk update && \
+      apk upgrade && \
+      apk add --no-cache \
+      alpine-sdk \
+      git \
+      openssh \
+      python3 \
+      tzdata \
+      build-base \
+      libtool \
+      autoconf \
+      automake \
+      gzip \
+      g++ \
+      make
+    - npm i
+    - npm run build:dist
+  only:
+    - main
+    
+deploy:
+  image: docker:latest
+  stage: deploy
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+
+  only:
+    - main
