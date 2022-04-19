@@ -17,4 +17,7 @@ export class UserEntity {
   @Column({ name: 'last_name' })
   lastName: string;
 
+  @Column({ name: 'sex' })
+  sex: string;
+
 }
