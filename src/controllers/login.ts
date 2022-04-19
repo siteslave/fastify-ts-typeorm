@@ -1,39 +1,38 @@
 import * as crypto from 'crypto'
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { UserEntity } from '../entities/user.entity';
+import { UserRepository } from '../repositories/user.repository';
 
 export default async (fastify: FastifyInstance) => {
 
-  // const db: Knex = fastify.knex
-  // const loginModel = new LoginModel()
+  const userRepository = new UserRepository(fastify.dataSource);
 
-  // fastify.post('/', async (request: FastifyRequest, reply: FastifyReply) => {
-  //   const body: any = request.body
-  //   const username = body.username
-  //   const password = body.password
+  fastify.post('/', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body: any = request.body
+    const username = body.username
+    const password = body.password
 
-  //   try {
-  //     const encPassword = crypto.createHash('md5').update(password).digest('hex')
-  //     const rs: any = await loginModel.login(db, username, encPassword)
+    try {
+      const encPassword = crypto.createHash('md5').update(password).digest('hex')
+      const user: UserEntity = await userRepository.login(username, encPassword)
 
-  //     if (rs.length > 0) {
-  //       const user: any = rs[0]
-  //       const payload: any = {
-  //         userId: user.user_id,
-  //         firstName: user.first_name,
-  //         lastName: user.last_name
-  //       }
+      if (user) {
+        const payload: any = {
+          userId: user.userId,
+          firstName: user.firstName,
+          lastName: user.lastName
+        }
 
-  //       const token = fastify.jwt.sign(payload)
-  //       reply.send({ token })
-  //     } else {
-  //       reply.status(401).send({ ok: false, message: 'Login failed' })
-  //     }
+        const token = fastify.jwt.sign(payload)
+        reply.send({ token })
+      } else {
+        reply.status(401).send({ ok: false, message: 'Login failed' })
+      }
 
-
-  //   } catch (error: any) {
-  //     reply.status(500).send({ message: error.message })
-  //   }
-  // })
+    } catch (error: any) {
+      reply.status(500).send({ message: error.message })
+    }
+  })
 
 }

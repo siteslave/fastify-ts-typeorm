@@ -11,6 +11,10 @@ export class UserRepository {
     this.entityManager = this.orm.manager;
   }
 
+  async login(username: any, password: any): Promise<any> {
+    return this.user.findOne({ where: { username, password } });
+  }
+
   async list(): Promise<any> {
     return this.user.findOne({ where: { userId: 1 } });
   }
