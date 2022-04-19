@@ -5,7 +5,9 @@ export default async (fastify: FastifyInstance) => {
 
   const userRepository = new UserRepository(fastify.dataSource);
 
-  fastify.get('/users', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/users', {
+    preValidation: [fastify.authenticate],
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const rs: any = await userRepository.list();
       reply.send(rs)
@@ -14,7 +16,9 @@ export default async (fastify: FastifyInstance) => {
     }
   })
 
-  fastify.get('/query', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/query', {
+    preValidation: [fastify.authenticate],
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const rs: any = await userRepository.query();
       reply.send(rs)
