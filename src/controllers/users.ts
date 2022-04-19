@@ -11,6 +11,7 @@ export default async (fastify: FastifyInstance) => {
   const userRepository = new UserRepository(fastify.dataSource);
 
   fastify.post('/', {
+    preValidation: [fastify.authenticate],
     schema: createUserSchema, attachValidation: true
   }, async (request: FastifyRequest, reply: FastifyReply) => {
     if (request.validationError) {
@@ -57,7 +58,9 @@ export default async (fastify: FastifyInstance) => {
   })
 
   // /search?q=xxxx
-  fastify.get('/search', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/search', {
+    preValidation: [fastify.authenticate]
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
 
     const query: any = request.query
     const _query = query.q
@@ -71,6 +74,7 @@ export default async (fastify: FastifyInstance) => {
   })
 
   fastify.put('/:userId/edit', {
+    preValidation: [fastify.authenticate],
     schema: updateUserSchema, attachValidation: true
   }, async (request: FastifyRequest, reply: FastifyReply) => {
 
@@ -98,7 +102,9 @@ export default async (fastify: FastifyInstance) => {
 
   })
 
-  fastify.delete('/:userId', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.delete('/:userId', {
+    preValidation: [fastify.authenticate]
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
     const params: any = request.params
     const userId = params.userId
 
