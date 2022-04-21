@@ -1,7 +1,7 @@
 import app from './app'
 
-const port = 8080
-const address = '0.0.0.0'
+const port = Number(process.env.PORT) || 8080
+const address = process.env.HOST || '0.0.0.0'
 
 const start = async () => {
   try {
