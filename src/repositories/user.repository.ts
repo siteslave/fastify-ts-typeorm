@@ -21,7 +21,10 @@ export class UserRepository {
 
   async search(query: any): Promise<any> {
     var _query = `%${query}%`;
-    return this.user.find({ where: { firstName: Like(_query) }, select: ["firstName", "lastName", "userId"] })
+    return this.user.find({
+      where: { firstName: Like(_query) },
+      select: ["firstName", "lastName", "userId"]
+    })
   }
 
   async save(data: any): Promise<UserEntity> {
