@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:dist": "npx gulp"
+    "build": "npx gulp"
   },
   "keywords": [],
   "author": "",
